@@ -48,8 +48,61 @@ Built while learning **LangChain tool calling** and comparing two approaches:
 ### 1️⃣ Agent (Simple)
 
 ```python
+from langchain.agents import create_agent
+
 agent = create_agent(
     llm,
     tools=[get_weather, get_news],
-    system_prompt="You are a good news reporter."
+    system_prompt="You are a helpful news reporter."
 )
+```
+
+**Pros:**
+- ✔️ Easy to use  
+- ✔️ Minimal setup  
+
+**Cons:**
+- ❌ Hides internal working  
+- ❌ Less control  
+
+---
+
+### 2️⃣ Runnables (Advanced)
+
+```python
+model = prompt | llm.bind_tools(tools)
+```
+
+**Pros:**
+- ✔️ Full control  
+- ✔️ Clear understanding of tool-calling loop  
+
+**Cons:**
+- ❌ Slightly more code  
+
+---
+
+## 🔁 Flow (Runnable Version)
+
+1. User input  
+2. Model decides tool calls  
+3. Execute tools  
+4. Append results as `ToolMessage`  
+5. Repeat until final response  
+
+---
+
+## 🔑 Setup
+
+Install dependencies:
+
+```bash
+pip install langchain langchain-mistralai tavily-python python-dotenv requests rich
+```
+
+Create a `.env` file:
+
+```
+OPENWEATHER_API_KEY=your_key
+TAVILY_API_KEY=your_key
+```
